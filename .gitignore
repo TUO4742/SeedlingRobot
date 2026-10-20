@@ -1,12 +1,13 @@
+# ---- Keil MDK / STM32 ----
 **/Objects/
 **/Listings/
 **/DebugConfig/
 **/RTE/
 **/Drivers/CMSIS/Lib/
 **/Drivers/CMSIS/NN/
-**/.git/
 *.axf
 *.hex
+*.bin
 *.lnp
 *.scvd
 *.htm
@@ -20,12 +21,38 @@
 *.bak
 *.uvguix.*
 *.lck
+*~
+
+# ---- KiCad 临时文件 ----
+*.kicad_prl
+*.kicad_prt
+*-backups/
+fp-info-cache
+_autosave-*
+~*.kicad_pcb
+~*.kicad_sch
+
+# ---- 压缩包 / 大体积交付物 ----
 *.rar
 *.zip
 *.7z
+
+# ---- ROS2 ----
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+ros2_ws/.*/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+colcon.meta
+
+# ---- 编辑器 / 系统 ----
 .vscode/
 .idea/
-__pycache__/
-*.pyc
+.cache/
+.clangd/
+compile_commands.json
 .DS_Store
 Thumbs.db
+desktop.ini

@@ -139,3 +139,29 @@ ros2 launch seedling_bringup nav2.launch.py map:=/path/to/map.yaml
 - 无 IMU 时，`wz` 完全依赖四轮正解，打滑会导致航向漂移；
 - 编码器计数 1320/转，20 ms 采样，低速分辨率约 0.0077 m/s，接近停止时量化明显；
 - 麦轮横移效率低，`vy_max` 已按 0.30 收敛，不要盲目调高。
+
+## 9. 自检工具（无需硬件）
+
+```bash
+python3 tools/kinematics_check.py     # 正解/逆解闭环、轮速符号、编码器分辨率
+python3 tools/protocol_selftest.py    # 14B/22B 帧编解码与异或校验
+```
+
+均为纯 Python、无第三方依赖，退出码 0 表示通过。
+
+`kinematics_check.py` 会打印一个硬件事实：**1320 counts/转、20 ms 采样下，
+1 个计数对应 7.7 mm/s**，因此低于约 8 mm/s 时速度量化明显，低速对准会「走走停停」。
+这是分辨率下限，不是调参问题。
+
+## 10. 编译注意
+
+- 本工作区 C++ **尚未在 ROS2 环境编译过**，首次 `colcon build` 可能需要补依赖。
+- `seedling_chassis` 依赖 POSIX 串口（`termios`），仅支持 Linux。
+- 建议为底盘串口建 udev 规则，例如：
+
+```text
+# /etc/udev/rules.d/99-seedling-chassis.rules
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="seedling_chassis"
+```
+
+然后把 `chassis.yaml` 里的 `serial_port` 改成 `/dev/seedling_chassis`。
