@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<robot name="seedling_robot">
+
+  <!-- ==================== 坐标系 ====================
+       map -> odom_combined : AMCL
+       odom_combined -> base_footprint : robot_localization EKF
+       base_footprint -> base_link : 静态（离地高度）
+       base_link -> laser_link : 静态
+       base_link -> wheel_* : 纯可视，不参与导航
+       ================================================= -->
+
+  <link name="base_footprint"/>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.06" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.26 0.22 0.08"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.55 0.55 0.58 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.06" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.26 0.22 0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="3.0"/>
+      <inertia ixx="0.02" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.03"/>
+    </inertial>
+  </link>
+
+  <joint name="base_to_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <!-- 轮半径 0.0325 m，车体底面离地约 0.04 m -->
+    <origin xyz="0 0 0.04" rpy="0 0 0"/>
+  </joint>
+
+  <link name="laser_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.03" height="0.04"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin xyz="0.02 0 0.14" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ==================== 轮子（仅可视） ====================
+       轮序 0=FL, 1=RR, 2=RL, 3=FR（与固件一致）
+       K = L+W = 0.168 m，轮半径 0.0325 m
+       ========================================================= -->
+
+  <link name="wheel_fl">
+    <visual>
+      <geometry><cylinder radius="0.0325" length="0.03"/></geometry>
+      <material name="dark"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    </visual>
+  </link>
+  <joint name="wheel_fl_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_fl"/>
+    <origin xyz="0.084 0.084 -0.0275" rpy="1.5707963 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_fr">
+    <visual>
+      <geometry><cylinder radius="0.0325" length="0.03"/></geometry>
+      <material name="dark"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    </visual>
+  </link>
+  <joint name="wheel_fr_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_fr"/>
+    <origin xyz="0.084 -0.084 -0.0275" rpy="1.5707963 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_rl">
+    <visual>
+      <geometry><cylinder radius="0.0325" length="0.03"/></geometry>
+      <material name="dark"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    </visual>
+  </link>
+  <joint name="wheel_rl_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_rl"/>
+    <origin xyz="-0.084 0.084 -0.0275" rpy="1.5707963 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_rr">
+    <visual>
+      <geometry><cylinder radius="0.0325" length="0.03"/></geometry>
+      <material name="dark"><color rgba="0.15 0.15 0.15 1.0"/></material>
+    </visual>
+  </link>
+  <joint name="wheel_rr_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_rr"/>
+    <origin xyz="-0.084 -0.084 -0.0275" rpy="1.5707963 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+</robot>

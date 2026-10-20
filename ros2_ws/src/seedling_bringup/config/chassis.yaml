@@ -1,0 +1,23 @@
+seedling_chassis:
+  ros__parameters:
+    # 串口：建议用 udev 固定名，不要写 /dev/ttyUSB0
+    serial_port: /dev/seedling_chassis
+    baudrate: 115200
+    rate_hz: 50.0
+    cmd_timeout_ms: 300
+
+    # 机械参数，与固件 robot_config.h / motor.h 保持一致
+    wheel_base_sum_m: 0.168
+    wheel_diameter_m: 0.065
+    encoder_line: 11.0
+    encoder_multiple: 4.0
+    gear_ratio: 30.0
+
+    # 速度限幅：数值低于 RosCar，本机更小更轻、麦轮横移效率低
+    max_vx: 0.35
+    max_vy: 0.30
+    max_wz: 0.80
+
+    # 坐标系：与 RosCar 保持一致，避免与 EKF 抢 TF
+    odom_frame: odom_combined
+    base_frame: base_footprint
